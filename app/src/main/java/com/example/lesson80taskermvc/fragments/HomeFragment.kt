@@ -18,7 +18,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
-        Toast.makeText(requireContext(), "Test", Toast.LENGTH_SHORT).show()
+
         return binding.root
     }
 
