@@ -43,13 +43,12 @@
         app:layout_constraintLeft_toLeftOf="@id/task_name"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <ImageView
+    <View
         android:id="@+id/category_indicator"
         android:layout_width="@dimen/_7sdp"
         android:layout_height="@dimen/_7sdp"
         android:layout_marginRight="@dimen/_10sdp"
-        android:background="@drawable/category_point_sign"
-        android:backgroundTint="@color/green"
+        android:background="@drawable/circle_indicator"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
