@@ -25,10 +25,12 @@ class MainPageCategoryAdapter(
             if (category.categoryColor == GRAY || category.categoryColor == YELLOW) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     itemBinding.categoryNameTv.setTextColor(context.getColor(R.color.my_black))
+                    itemBinding.taskCountTv.setTextColor(context.getColor(R.color.my_black))
                 }
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     itemBinding.categoryNameTv.setTextColor(context.getColor(R.color.white))
+                    itemBinding.taskCountTv.setTextColor(context.getColor(R.color.white))
                 }
             }
             itemBinding.categoryNameTv.text = category.categoryName
