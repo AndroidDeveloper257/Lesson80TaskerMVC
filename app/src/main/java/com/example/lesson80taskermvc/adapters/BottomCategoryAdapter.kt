@@ -1,8 +1,10 @@
 package com.example.lesson80taskermvc.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lesson80taskermvc.R
@@ -10,15 +12,25 @@ import com.example.lesson80taskermvc.database.AppDatabase
 import com.example.lesson80taskermvc.database.categories.CategoryEntity
 import com.example.lesson80taskermvc.databinding.MainPageCategoryItemBinding
 
-class MainPageCategoryAdapter(
-    private var context: Context,
-    private var categoryList: ArrayList<CategoryEntity>,
-    var onCategoryClicked: (CategoryEntity) -> Unit
-) : RecyclerView.Adapter<MainPageCategoryAdapter.Vh>() {
+class BottomCategoryAdapter(
+    var context: Context,
+    var categoryList: ArrayList<CategoryEntity>,
+    var selectionList: ArrayList<Boolean>,
+    var onItemSelected: (CategoryEntity) -> Unit
+) : RecyclerView.Adapter<BottomCategoryAdapter.Vh>() {
 
-    inner class Vh(private var itemBinding: MainPageCategoryItemBinding) :
+    private var lastSelectedIndex = -1
+    private lateinit var myParent: ViewGroup
+
+    inner class Vh(var itemBinding: MainPageCategoryItemBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
-        fun onBind(category: CategoryEntity) {
+        @SuppressLint("NotifyDataSetChanged")
+        fun onBind(category: CategoryEntity, position: Int) {
+            if (selectionList[position]) {
+                itemBinding.selector.visibility = View.VISIBLE
+            } else {
+                itemBinding.selector.visibility = View.GONE
+            }
             itemBinding.layout.setBackgroundResource(category.categoryColor)
             if (category.categoryColor == R.color.gray || category.categoryColor == R.color.yellow) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -44,7 +56,14 @@ class MainPageCategoryAdapter(
             }
             itemBinding.taskCountTv.text = text
             itemBinding.root.setOnClickListener {
-                onCategoryClicked.invoke(category)
+                lastSelectedIndex = position
+                onItemSelected.invoke(category)
+                notifyDataSetChanged()
+            }
+            if (lastSelectedIndex == position) {
+                itemBinding.selector.visibility = View.VISIBLE
+            } else {
+                itemBinding.selector.visibility = View.GONE
             }
         }
     }
@@ -59,6 +78,7 @@ class MainPageCategoryAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Vh {
+        myParent = parent
         return Vh(
             MainPageCategoryItemBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -68,8 +88,8 @@ class MainPageCategoryAdapter(
         )
     }
 
-    override fun onBindViewHolder(holder: Vh, position: Int) {
-        holder.onBind(categoryList[position])
+    override fun onBindViewHolder(holder: Vh, @SuppressLint("RecyclerView") position: Int) {
+        holder.onBind(categoryList[position], position)
     }
 
     override fun getItemCount(): Int = categoryList.size
