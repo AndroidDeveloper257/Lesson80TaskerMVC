@@ -113,7 +113,7 @@ class HomeFragment : Fragment() {
 
     private fun showBottomSheetDialog(category: CategoryEntity) {
         // TODO: BottomSheetDialog chiqishi kerak
-        Toast.makeText(requireContext(), category.categoryName, Toast.LENGTH_SHORT).show()
+
     }
 
     private fun loadTasks() {

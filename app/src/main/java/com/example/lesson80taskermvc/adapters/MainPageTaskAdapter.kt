@@ -1,5 +1,6 @@
 package com.example.lesson80taskermvc.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ class MainPageTaskAdapter(
 
     inner class Vh(var itembinding: MainPageTaskItemBinding) :
         RecyclerView.ViewHolder(itembinding.root) {
+        @SuppressLint("UseCompatLoadingForColorStateLists")
         fun onBind(task: Task, position: Int) {
             val selection = selectionList[position]
             if (selection) {
@@ -28,7 +30,8 @@ class MainPageTaskAdapter(
                 itembinding.selector.setImageResource(R.drawable.ic_main_page_unselected)
             }
             itembinding.taskName.text = task.taskName
-            itembinding.categoryIndicator.setBackgroundColor(getColor(task.categoryId))
+            itembinding.categoryIndicator.backgroundTintList =
+                context.resources.getColorStateList(getColor(task.categoryId))
             itembinding.selector.setOnClickListener {
 
                 if (selection) {
