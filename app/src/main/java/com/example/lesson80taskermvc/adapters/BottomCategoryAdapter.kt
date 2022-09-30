@@ -11,6 +11,7 @@ import com.example.lesson80taskermvc.R
 import com.example.lesson80taskermvc.database.AppDatabase
 import com.example.lesson80taskermvc.database.categories.CategoryEntity
 import com.example.lesson80taskermvc.databinding.MainPageCategoryItemBinding
+import com.example.lesson80taskermvc.functions.countTasks
 
 class BottomCategoryAdapter(
     var context: Context,
@@ -44,17 +45,7 @@ class BottomCategoryAdapter(
                 }
             }
             itemBinding.categoryNameTv.text = category.categoryName
-            val countTasks = countTasks(category.id)
-            val text = if (countTasks == 0) {
-                "No task"
-            } else {
-                if (countTasks == 1) {
-                    "1 task"
-                } else {
-                    "$countTasks tasks"
-                }
-            }
-            itemBinding.taskCountTv.text = text
+            itemBinding.taskCountTv.text = countTasks(category.id, context)
             itemBinding.root.setOnClickListener {
                 lastSelectedIndex = position
                 onItemSelected.invoke(category)
@@ -66,15 +57,6 @@ class BottomCategoryAdapter(
                 itemBinding.selector.visibility = View.GONE
             }
         }
-    }
-
-    private fun countTasks(categoryId: Long): Int {
-        var count = 0
-        val tasks = AppDatabase.getInstance(context).taskDao().getTasks()
-        tasks.forEach {
-            if (it.categoryId == categoryId) count++
-        }
-        return count
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Vh {

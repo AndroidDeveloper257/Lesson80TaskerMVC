@@ -4,31 +4,28 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lesson80taskermvc.R
 import com.example.lesson80taskermvc.database.AppDatabase
+import com.example.lesson80taskermvc.database.categories.CategoryEntity
 import com.example.lesson80taskermvc.database.tasks.Task
+import com.example.lesson80taskermvc.databinding.BottomTaskItemBinding
 import com.example.lesson80taskermvc.databinding.MainPageTaskItemBinding
-import java.lang.Exception
+import com.example.lesson80taskermvc.functions.setTextColor
 
-class MainPageTaskAdapter(
+class BottomDialogTaskAdapter(
+    var category: CategoryEntity,
     var context: Context,
     private val taskList: ArrayList<Task>
 ) :
-    RecyclerView.Adapter<MainPageTaskAdapter.Vh>() {
+    RecyclerView.Adapter<BottomDialogTaskAdapter.Vh>() {
 
-    inner class Vh(var itembinding: MainPageTaskItemBinding) :
+    inner class Vh(var itembinding: BottomTaskItemBinding) :
         RecyclerView.ViewHolder(itembinding.root) {
         @SuppressLint("UseCompatLoadingForColorStateLists")
         fun onBind(task: Task, position: Int) {
+            setTextColor(category, itembinding.taskName, context)
             itembinding.taskName.text = task.taskName
-            try {
-                itembinding.categoryIndicator.backgroundTintList =
-                    context.resources.getColorStateList(getColor(task.categoryId))
-            } catch (e: Exception) {
-                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-            }
         }
     }
 
@@ -43,7 +40,7 @@ class MainPageTaskAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Vh {
         return Vh(
-            MainPageTaskItemBinding.inflate(
+            BottomTaskItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
